@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  time: 1
+  job: one
+  user: one
+
+two:
+  time: 1
+  job: two
+  user: two

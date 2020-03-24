@@ -1,0 +1,33 @@
+<form action="/clocks/<%= @clock.id %>/edit" method="post">
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	<input type="hidden" name="_method" value="patch">
+	
+	<div class="form-group">
+		    <label for="clock[employee]">Employee</label>
+		    <input type="text" class="form-control" name="clock[employee]" value="<%= @clock.user.first %> <%= @clock.user.last %>">	    
+		  </div>
+		  
+		  <div class="form-group">
+		    <label for="clock[time]">Minutes</label>
+		    <input type="integer" class="form-control" name="clock[time]" value="<%= @clock.time %>">
+		  </div>
+		 
+
+
+		<div class="form-group">
+		    <label for="clock[job_id]">Job</label>
+		    <select multiple class="form-control" id="exampleFormControlSelect2" name="clock[job_id]">
+		    <% @jobs.each do |job| %>
+		    	
+		    	<% if job.id == @clock.job_id %>
+					<option value="<%= job.id %>" selected><%= job.company %></option>
+				<% else %>
+					<option value="<%= job.id %>"><%= job.company %></option>
+				<% end %>
+		    	
+			<% end %>
+		    </select>
+		</div>	  	
+		<button type="submit" class="btn btn-primary">Update Timesheet</button>
+	
+</form>	

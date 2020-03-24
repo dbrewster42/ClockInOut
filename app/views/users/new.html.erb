@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<style type="text/css">
+		.left {
+	width: 360px;
+	border: 2px solid black;
+	display: inline-block;
+	height: 400px;
+	vertical-align: top;
+	padding: 20px;
+}
+.right {
+	width: 360px;
+	border: 2px solid black;
+	display: inline-block;
+	height: 200px;
+	vertical-align: top;
+	padding: 20px;	
+}
+.logs {
+	margin-left: 36px;
+}
+#city {
+	margin-left: 46px;
+}
+#address {
+	margin-left: 15px;
+}
+.pass {
+	margin-left: 8px;
+}
+
+	</style>
+</head>
+<body>
+<h1>Welcome!</h1>
+<div class="left">
+	<h2>Register</h2>
+	<form action="/users" method="post">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		First Name <input type="text" name="user[first]"> <br>
+		Last Name <input type="text" name="user[last]"><br>		
+		Email <input type="text" name="user[email]" class="logs"><br>	
+		Address <input type="text" name="user[address]" id="address"><br>
+		City <input type="text" name="user[city]" id="city"><br>
+		State <input type="text" name="user[state]" maxlength="2" class="logs"><br>	
+		Password <input type="password" name="user[password]" class="pass"><br>
+		*Password should be at least 6 characters<br>
+		Confirm PW <input type="password" name="user[password_confirmation]"><br>		
+		Job Title <select name="user[position_id]">
+			<% @positions.each do |p| %>
+		    	<option value="<%= p.id %>"><%= p.title %></option>
+		    <% end %>
+		    </select>
+		<input type="submit" value="Register">		
+	</form>
+</div>
+<div class="right">
+	<h2>Login</h2>
+	<form action="/" method="post">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		Email <input type="text" name="email" class="logs"><br>
+		Password <input type="password" name="password" class="pass"><br>
+		<input type="submit" value="Login">
+	</form>	
+</div>
+</body>
+</html>

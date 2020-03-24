@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Payroll</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <% if current_user %>
+  	<nav class="navbar navbar-dark bg-dark">
+  		<h2>
+  		<a href="/home">Clock In/Out		</a><span class="space"> | </span> 	
+  		<a href="/timesheets">		Payroll		</a><span class="space"> | </span> 	
+  		<a href="/jobs">		Jobs	</a><span class="space"> | </span> 
+  		<a href="/jobs/new">	New Jobs	</a><span class="space"> | </span>  		
+  		<a href="/users/<%= current_user.id %>">		Settings	</a><span class="space"> | </span> 			
+  		<form action="/users/<%= current_user.id %>/logout" method="post" class="form">
+          <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+          <input type="hidden" name="_method" value="delete">
+          <input type="submit" value="Logout" id="logout">
+      	</form>	
+		</h2>
+	</nav>
+  <% end %>
+  
+	<% if flash[:alert] %>
+    <div class="alert">
+    	<h2><%= flash[:alert] %></h2>
+    </div>    
+  <% end %> 
+  <% if flash[:errors] %>
+    <div class="alert">  	
+      <% flash[:errors].each do |e| %>
+        <h2><%= e %></h2>
+      <% end %>
+    </div>
+  <% end %> 
+    	
+    <%= yield %>
+  </body>
+</html>

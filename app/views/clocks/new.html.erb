@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home</title>
+	<style type="text/css">
+		.clockbutton {
+			background-color: red;
+			color: white;
+			width: 120px;
+			height: 30px;
+		}
+	</style>
+</head>
+<body>
+<div id="sidebar">	
+	 <% if @lastclock %>
+		 <% if @lastclock.clockedin == false %>
+			<form action="/clockin" method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+			Job <select name="clock[job_id]">
+					<% @jobs.each do |job| %>
+						<option value="<%= job.id %>"><%= job.company %></option>
+					<% end %>
+				</select>
+			<input type="submit" value="Clock In" class="clockbutton">
+			</form>
+		<% else %>
+			<form action="/clocks/<%= @lastclock.id %>" method="post">
+				<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+				<input type="hidden" name="_method" value="patch">
+				<input type="submit" value="Clock Out" class="clockbutton">
+			</form>	
+		<% end %>
+	<% else %>
+		<form action="/clockin" method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+			Job <select name="clock[job_id]">
+				<% @jobs.each do |job| %>
+					<% if job.id == 5 %>
+						<option value="<%= job.id %>" selected><%= job.company %></option>
+					<% end %>
+				    <option value="<%= job.id %>"><%= job.company %></option>
+				<% end %>
+				</select>
+			<input type="submit" value="Clock In">
+			</form>
+	<% end %>
+</div>
+	<table class="table table-striped">
+  		<thead>
+   			<tr>
+     		<th scope="col">Employee</th>
+     		<th scope="col">Job</th>
+     		<th scope="col">Date</th>	      		      		      	
+	      	<th scope="col">Clock In</th>	      	
+	      	<th scope="col">Clock Out</th> 		      	      		      	
+	      	<th scope="col">Hours Worked</th>
+	      	<% if current_user.admin %>
+	      		<th scope="col">Action</th>
+	      	<% end %>   	
+	      	</tr>
+	  	</thead>
+	  	<tbody>
+	  		<% @clocks.each do |c| %>
+	   	 	<tr> 
+	   	 	  <td><%= c.user.first %> <%= c.user.last %> </td>
+	   	 	  <td><%= c.job.company %></td>
+	   	 	  <td><%= c.created_at.strftime("%b %d, %Y") %></td>	   	    
+	   	 	  <td><%= c.created_at.strftime("%I:%M %p") %></td>	
+	   	 	  <% if c.clockedin == false %>
+	    	  	<td><%= c.updated_at.strftime("%I:%M %p") %></td>
+	    	  <% else %>
+	    	  	<td>N/A</td>
+	    	  <% end %>
+	    	   <% if c.time %>
+			  	<td><%= c.time / 60 %>:<%= c.time % 60 %></td>
+			  	<% else %>
+			  	<td>Active</td>
+			  	 <% end %> 
+	    	  <% if current_user.admin %>
+	    	  	<td><a href="/clocks/<%= c.id %>/edit">Edit</a></td>
+	    	  <% end %>       		
+	    	</tr>
+    		<% end %>
+  			</tbody>
+  			 <% if current_user.admin %>
+	  			<tbody>
+		  		<% @others.each do |c| %>
+		   	 	<tr> 
+		   	 	  <td><%= c.user.first %> <%= c.user.last %> </td>
+		   	 	  <td><%= c.job.company %></td>
+		   	 	  <td><%= c.created_at.strftime("%b %d, %Y") %></td>	   	    
+		   	 	  <td><%= c.created_at.strftime("%I:%M %p") %></td>	 
+		    	  <% if c.clockedin == false %>
+		    	  	<td><%= c.updated_at.strftime("%I:%M %p") %></td>
+		    	  <% else %>
+		    	  	<td>N/A</td>
+		    	  <% end %>
+				  <% if c.time %>
+				  	<td><%= c.time / 60 %>:<%= c.time % 60 %></td>
+				  	<% else %>
+				  	<td>Active</td>
+				  	 <% end %> 
+		    	  <% if current_user.admin %>
+		    	  	<td><a href="/clocks/<%= c.id %>/edit">Edit</a></td>	    	  	
+		    	  <% end %>       		
+		    	</tr>
+	    		<% end %>
+	  			</tbody>
+  			 <% end %> 
+		</table>
+
+</body>
+</html>

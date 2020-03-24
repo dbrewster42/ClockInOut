@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Paycheck</title>
+</head>
+<body>
+	<table class="table table-striped">
+  		<thead>
+   			<tr> 
+   			<th scope="col">Employee</th>    		
+     		<th scope="col">Date</th>	      		      		      	
+	      	<th scope="col">Clock In</th>	      	
+	      	<th scope="col">Clock Out</th> 		      	      		      	
+	      	<th scope="col">Hours Worked</th>	      	 	
+	      	</tr>
+	  	</thead>
+	  	<tbody>
+	  		<% @currentClocks.each do |c| %>
+	   	 	<tr> 
+	   	 	  <td><%= c.user.first %> <%= c.user.last %> </td>	   	 	  
+	   	 	  <td><%= c.created_at.strftime("%b %d, %Y") %></td>	   	    
+	   	 	  <td><%= c.created_at.strftime("%I:%M %p") %></td>	
+	   	 	  <% if c.clockedin == false %>
+	    	  	<td><%= c.updated_at.strftime("%I:%M %p") %></td>
+	    	  <% else %>
+	    	  	<td>N/A</td>
+	    	  <% end %>
+	    	   <% if c.time %>
+			  	<td><%= c.time / 60 %>:<%= c.time % 60 %></td>
+			  	<% else %>
+			  	<td>Active</td>
+			  	 <% end %> 	    	     		
+	    	</tr>	    
+    		<% end %>
+    	</tbody>	
+    </table>
+</body>
+</html>

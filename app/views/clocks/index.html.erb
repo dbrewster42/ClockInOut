@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<table class="table table-striped">
+  		<thead>
+   			<tr>
+     		<th scope="col">Name</th>	      		      		      	
+	      	<th scope="col">Email</th>	      	
+	      	<th scope="col">City</th>
+	      	<th scope="col">Title</th>
+	      	<% if current_user.admin %>
+	      		<th scope="col">Wages</th>
+	      	<% end %>	      		      	
+	      	<th scope="col">Admin</th>
+	      	<th scope="col">Action</th>
+	      	
+	      	 	
+	    	</tr>
+	  	</thead>
+	  	<tbody>
+	  		<% @users.each do |user| %>
+	   	 	<tr> 
+	   	 	  <td><%= user.first %> <%= user.last %> </td>
+	   	 	  <td><%= user.email %></td>
+	   	 	  <td><%= user.city %></td>	   	    	 
+	    	  <td><%= user.position.title %></td>
+	    	  <% if current_user.admin %>
+	    	  	<td><%= user.position.wage / 100 %>.<%= user.position.wage % 100 %><% if user.position.wage != 1250 %>0 <% end %></td>
+	    	  <% end %>
+	    	  <% if user.admin %>
+	    	  	<td>Yes</td>
+	    	  <% else %>
+	    	  	<td></td>
+	    	  <% end %>	    	  
+	    	  <td><a href="/users/<%= user.id %>">Edit</a></td>
+	    	  
+    		</tr>
+    		<% end %>
+  			</tbody>
+		</table>
+</body>
+</html>

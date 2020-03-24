@@ -1,0 +1,194 @@
+
+SHOW
+application.html
+ <% if current_user.admin %>
+  		<a href="/jobs/new">	New Jobs	</a><span class="space"> | </span> 
+      <% else %>
+      <a href="/clocks/<%= current_user.id %>">  Paycheck  </a><span class="space"> | </span> 
+      <% end %> 		
+
+show.html
+  def show
+    @clocks = Clock.where(user: current_user)
+    selected_date = Date.parse(params[:selected_date])
+    # @currentClocks = @clocks.created_at > selected_date
+    #  @currentClocks = @clocks.where(
+    #    :created_at => selected_date.beginning_of_day..selected_date.end_of_day)
+    # @current_clocks = @clocks.where(:created_at => selected_date)
+
+    @current_clocks = Clock.where("created_at >= :start_date AND created_at <= :end_date",
+      {start_date: params[:start_date], end_date: params[:end_date]})
+
+  end
+
+
+
+
+
+
+
+
+<!-- Clock In <input type="integer" name="clock[created_at]" value="<%= @job.estimate %>"><br>
+	Clock Out <input type="integer" name="clock[updated_at]" value="<%= @job.billed %>"><br> -->
+
+
+	Job <input type="text" name="clock[job]" value="<%= @clock.job.company %>"><br>	
+
+	<%= @lastclock.user_id %>
+	<%= @lastclock.clockedin %>
+
+
+	<% if @lastclock.clockedin == false %>
+		<form action="/clockin" method="post">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		Job <select name="clock[job_id]">
+			<% @jobs.each do |job| %>
+			    <option value="<%= job.id %>"><%= job.company %></option>
+			<% end %>
+			</select>
+		<input type="submit" value="Clock In">
+		</form>
+	<% else %>
+		<form action="/clocks/<%= @lastclock.id %>" method="post">
+			<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+			<input type="hidden" name="_method" value="patch">
+			<input type="submit" value="Clock Out">
+		</form>	
+	<% end %>
+
+
+
+<td><form action="/clocks/<%= c.id %>" method="post">
+	<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+	<input type="hidden" name="_method" value="patch">	
+	<input type="submit" value="Clock Out">
+</form>	</td>
+
+
+
+
+% if job %>
+						<% if @clock.job.id == job.id %>
+						<option value="<%= job.id %>" selected><%= job.company %></option>
+						<% end %>
+					<% end %>
+
+
+
+First Name <input type="text" name="user[first]"> <br>
+		Last Name <input type="text" name="user[last]"><br>		
+		Email <input type="text" name="user[email]" class="logs"><br>	
+		Address <input type="text" name="user[address]" id="address"><br>
+		City <input type="text" name="user[city]" id="city"><br>
+		State <input type="text" name="user[state]" maxlength="2" class="logs"><br>	
+		Password <input type="password" name="user[password]" class="pass"><br>
+		*Password should be at least 6 characters<br>
+		Confirm PW <input type="password" name="user[password_confirmation]"><br>		
+		Job Title <select name="user[position_id]">
+			<% @positions.each do |p| %>
+		    	<option value="<%= p.id %>"><%= p.title %></option>
+		    <% end %>
+		    </select>
+		<input type="submit" value="Register">
+<form action="/users" method="post">
+		<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+		<div class="form-group">
+		    <label for="user[first]">First Name</label>
+		    <input type="text" class="form-control" name="user[first]">	    
+		  </div>
+		  <div class="form-group">
+		    <label for="user[last]">Last Name</label>
+		    <input type="text" class="form-control" name="user[last]">
+		  </div>
+		  <div class="form-group">
+		    <label for="user[email]">Email</label>
+		    <input type="email" class="form-control form-control-lg" name="user[email]">
+		     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+		  </div>   
+		  <div class="form-group">   
+		    <label for="user[address]">Address</label>
+		    <input type="text" class="form-control" name="user[address]">	    
+		  </div>
+		  <div class="form-group">
+		    <label for="user[city]">City</label>
+		    <input type="text" class="form-control" name="user[city]">
+		  </div>
+		  <div class="form-group">
+		    <label for="user[state]">State</label>
+		    <input type="text" class="form-control" name="user[state]" maxlength="2">
+		  </div>
+		
+		<div class="form-group">
+		    <label for="user[password]">Password</label>
+		    <input type="password" class="form-control" name="user[password]"> <small id="passwordHelp" class="form-text text-muted">*Password should be at least 6 characters</small>   
+		  </div>
+		  <div class="form-group">
+		    <label for="user[password_confirmation]">Confirm Password</label>
+		    <input type="password" class="form-control" name="user[password_confirmation]">
+		  </div> 
+		
+		Job Title <select name="user[position_id]">
+			<% @positions.each do |p| %>
+		    	<option value="<%= p.id %>"><%= p.title %></option>
+		    <% end %>
+		    </select>		
+		<button type="submit" class="btn btn-primary">Register</button>		
+	</form>
+</div>
+
+
+
+
+UPDATE---------------------
+		First Name <input type="text" name="user[first]" value="<%= @user.first %>"> <br>
+		Last Name <input type="text" name="user[last]" value="<%= @user.last %>"><br>		
+		Email <input type="text" name="user[email]" class="logs" value="<%= @user.email %>"><br>	
+		Address <input type="text" name="user[address]" value="<%= @user.address %>"><br>
+		City <input type="text" name="user[city]" class="city" value="<%= @user.city %>"><br>
+		State <input type="text" name="user[state]" class="logs"  maxlength="2" value="<%= @user.state %>"><br>	
+		Password <input type="password" name="user[password]"><br>
+		*Password should be at least 6 characters<br>
+		Confirm PW <input type="password" name="user[password_confirmation]"><br>		
+		Job Title <select name="user[position]">
+			<% @positions.each do |p| %>
+		    	<option value="<%= p.id %>"><%= p.title %></option>
+		    <% end %>
+		    </select><br>
+		<% if current_user.admin %>
+	    	Administrator <input type="radio" name="user[admin]" value="false" checked>
+	    	<label for="false">False</label>
+	    	<input type="radio" name="user[admin]" value="true">
+	    	<label for="true">True</label><br>
+	    <% end %>	 
+		<input type="submit" value="Update">	
+	-------------------------------NEWJOB
+	Company <input type="text" name="job[company]"><br>
+		Description <input type="text" name="job[description]"><br>
+		Estimate <input type="text" name="job[estimate]"><br>	
+		<input type="submit" value="Add Job">
+
+
+
+clock.edit
+Employee <input type="text" name="clock[employee]" value="<%= @clock.user.first %> <%= @clock.user.first %>"><br>
+	Job <select name="clock[job_id]">
+		<% @jobs.each do |job| %>
+			<% if job.id == @clock.job.id %>
+			<option value="<%= job.id %>" selected><%= job.company %></option>
+			<% end %>
+		    <option value="<%= job.id %>"><%= job.company %></option>
+		<% end %>
+		</select><br>
+		Minutes <input type="integer" name="clock[time]" value="<%= @clock.time %>"><br>
+
+
+job.edit
+Company <input type="text" name="job[company]" value="<%= @job.company %>"><br>
+	Description <input type="text" name="job[description]" value="<%= @job.description %>"><br>
+	Estimate <input type="integer" name="job[estimate]" value="<%= @job.estimate %>"><br>
+	Billed <input type="integer" name="job[billed]" value="<%= @job.billed %>"><br>
+	Paid <input type="integer" name="job[paid]" value="<%= @job.paid %>"><br>
+	Completed: Yes <input type="radio" name="job[completed]" value="true">
+	No <input type="radio" name="job[completed]" value="false"><br>		
+	<input type="submit" value="Edit Job">
+

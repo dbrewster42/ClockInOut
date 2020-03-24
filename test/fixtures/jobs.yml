@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company: MyString
+  description: MyString
+  estimate: 1
+  user: one
+  billed: 1
+  paid: 1
+  completed: false
+
+two:
+  company: MyString
+  description: MyString
+  estimate: 1
+  user: two
+  billed: 1
+  paid: 1
+  completed: false
